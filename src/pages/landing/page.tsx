@@ -25,7 +25,7 @@ export const LandingPage: React.FC<{}> = () => {
     }
 
     return (
-        <Flex flexDirection='column' width='100%' alignItems='center' justifyContent='flex-end' bg='blue' height='100%' maxHeight='100vh'>
+        <Flex flexDirection='column' width='100%' alignItems='center' justifyContent='flex-end' height='100%' maxHeight='100vh'>
             <Flex style={{ position: 'absolute', top: 0 }} >
                 <img src='https://pbs.twimg.com/media/EelY6rRXkAUtZHM?format=png' width='100%' />
             </Flex>
