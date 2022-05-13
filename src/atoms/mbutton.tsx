@@ -83,7 +83,7 @@ export const MButton: React.FC<Omit<ButtonProps, 'onClick'> & { onClick?: (..._:
             ) : (
                 ''
             )}
-            <span className="content">{children}</span>
+            {children}
         </RippleButton>
     )
 }

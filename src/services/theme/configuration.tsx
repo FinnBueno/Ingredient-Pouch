@@ -2,11 +2,11 @@ import { createGlobalStyle } from 'styled-components';
 
 const darkTheme = {
     background: 'rgb(255, 231, 220)',
-    backgroundLight: 'rgb(245, 221, 210)',
+    backgroundLight: 'rgb(245, 241, 240)',
     primary: 'rgb(244, 49, 39)',
     primaryLighter: 'rgb(244, 79, 59)',
     secondary: '#7a6724',
-    text: '#FAFAFA',
+    text: '#241717',
     error: '#C82D2B',
     success: '#4A8744',
 };
@@ -21,15 +21,22 @@ const customTheme = {
     breakpoints: ['350px', '480px', '760px', '1024px', '1200px'],
     fonts: {
         // TODO: Use different fonts maybe?
-        body: 'Montserrat, sans-serif',
         fantasy: 'MedievalSharp, Montserrat, sans-serif',
-        heading: 'Montserrat, sans-serif',
-        button: 'Montserrat, sans-serif',
+        heading: 'MedievalSharp, Montserrat, sans-serif',
+        body: 'MedievalSharp, Montserrat, sans-serif',
+        button: 'MedievalSharp, Montserrat, sans-serif',
+        // body: 'Montserrat, sans-serif',
+        // heading: 'Montserrat, sans-serif',
+        // button: 'Montserrat, sans-serif',
     },
     text: {
         body: {
             fontFamily: 'body',
             fontWeight: 550,
+            color: 'text',
+        },
+        fancy: {
+            fontFamily: 'fantasy',
             color: 'text',
         },
         title: {
@@ -56,7 +63,7 @@ const customTheme = {
             fontFamily: 'fantasy',
             fontWeight: 700,
             color: 'text',
-            fontSize: '44px',
+            fontSize: '38px',
         },
         heading2: {
             variant: 'text.heading1',
@@ -78,6 +85,9 @@ const customTheme = {
             bg: 'primary',
             fontWeight: 600,
             outline: 'none',
+            '& > div': {
+                color: darkTheme.backgroundLight,
+            }
             // TODO: Set loading indicator colour
         },
         primaryLarge: {
@@ -261,14 +271,11 @@ customTheme.variants = {
 
 
 /*
-background-image: url(https://filterforge.com/filters/231.jpg);
-        filter: blur(30px);
-        -webkit-filter: blur(30px);
-        box-shadow:inset 0 0 0 2000px rgba(255, 231, 220, 0.3);
+        background: radial-gradient(ellipse at left bottom, ${darkTheme.backgroundLight}, ${darkTheme.background});
 */
 export const GlobalStyle = createGlobalStyle`
     html, body {
-        background: radial-gradient(ellipse at left bottom, ${darkTheme.backgroundLight}, ${darkTheme.background});
+        background: ${darkTheme.background};
         margin: 0;
     }
     div.firebase-emulator-warning {

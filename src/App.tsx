@@ -9,8 +9,8 @@ import { AuthProvider } from 'src/services/auth';
 
 const App: React.FC<{}> = () => (
     <Router>
+        <GlobalStyle />
         <ThemeProvider theme={theme}>
-            <GlobalStyle />
             <ToastContainer
                 position='bottom-right'
                 autoClose={1750}
