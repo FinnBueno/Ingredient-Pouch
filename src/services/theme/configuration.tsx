@@ -5,7 +5,7 @@ const darkTheme = {
     backgroundLight: 'rgb(245, 241, 240)',
     primary: 'rgb(244, 49, 39)',
     primaryLighter: 'rgb(244, 79, 59)',
-    secondary: '#7a6724',
+    secondary: 'rgb(242, 202, 183)',
     text: '#241717',
     error: '#C82D2B',
     success: '#4A8744',
@@ -13,7 +13,7 @@ const darkTheme = {
 
 const colors = darkTheme;
 
-const appBarHeight = (add = 0) => `${60 + add}px`;
+const appBarHeight = (add = 0) => `${80 + add}px`;
 const headerHeight = (add = 0) => `${66 + add}px`;
 
 const customTheme = {
@@ -196,7 +196,7 @@ const customTheme = {
             left: 0,
             right: 0,
             height: appBarHeight(),
-            bg: 'backgroundLight',
+            bg: 'background',
             boxShadow: '0px 10px 13px -7px #000000, 0px -3px 12px 3px rgba(0,0,0,0.2)'
         },
         headerFrame: {

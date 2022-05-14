@@ -22,7 +22,6 @@ export const AuthProvider: React.FC<{}> = (props) => {
     const [error, setError] = useState(false);
 
     const authStateChanged = (fbUser: firebase.User | null) => {
-        console.log(fbUser);
         setUser(fbUser as SignedInUser);
         setLoading(false);
     }

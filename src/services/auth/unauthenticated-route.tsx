@@ -14,7 +14,7 @@ export const UnauthenticatedRoute: React.FC<UnauthenticatedRouteProps> = (props)
             component={props.component}
         />
     ) : (
-        <Redirect to='/player' />
+        <Redirect to='/home' />
     );
 };
 
