@@ -11,9 +11,7 @@ export const PageManager: React.FC<{}> = () => {
             <Flex flexDirection='column' width='100%' height='auto' minHeight='100%'>
                 <Switch location={location}>
                     <AuthenticatedRoute path='/home' component={() => <></>} />
-                    <UnauthenticatedRoute path='/signin' component={() => <></>} />
-                    <UnauthenticatedRoute path='/signup' component={() => <></>} />
-                    <Route path='/' component={LandingPage} /> {/* Landing page */}
+                    <UnauthenticatedRoute path='/' component={LandingPage} />
                 </Switch>
             </Flex>
         </Flex>

@@ -63,7 +63,7 @@ const customTheme = {
             fontFamily: 'fantasy',
             fontWeight: 700,
             color: 'text',
-            fontSize: '38px',
+            fontSize: '42px',
         },
         heading2: {
             variant: 'text.heading1',
