@@ -6,6 +6,7 @@ const darkTheme = {
     primary: 'rgb(244, 49, 39)',
     primaryLighter: 'rgb(244, 79, 59)',
     secondary: 'rgb(242, 202, 183)',
+    secondaryDarker: 'rgb(212, 172, 153)',
     text: '#241717',
     error: '#C82D2B',
     success: '#4A8744',
@@ -51,7 +52,7 @@ const customTheme = {
         label: {
             variant: 'text.body',
             fontSize: '14px',
-            opacity: .55,
+            opacity: .75,
             fontWeight: 600,
         },
         error: {
@@ -72,12 +73,12 @@ const customTheme = {
         },
         heading3: {
             variant: 'text.heading2',
-            fontSize: '26px',
+            fontSize: '28px',
             fontWeight: 600,
         },
         heading4: {
             variant: 'text.heading3',
-            fontSize: '20px',
+            fontSize: '24px',
         }
     },
     buttons: {
@@ -132,8 +133,16 @@ const customTheme = {
             margin: 0,
             bg: 'transparent',
             outline: 'none',
+            color: 'text',
             p: 2
         },
+        action: {
+            width: '60px',
+            height: '60px',
+            p: 2,
+            pb: '6px',
+            borderRadius: '100%',
+        }
     },
     forms: {
         input: {
@@ -169,18 +178,20 @@ const customTheme = {
     },
     variants: {
         card: {
-            bg: 'backgroundLight',
+            bg: 'secondary',
             boxShadow: 'rgb(0, 0, 0, .4) 0px 10px 13px -7px, 5px 5px 15px 5px rgba(0,0,0,0)',
-            transition: 'transform .2s, opacity .2s',
-            opacity: 1,
-            '&:active': {
-                transform: 'translateY(6px)'
-            },
-            'userSelect': 'none',
+            py: 2,
+            px: 3,
+            borderRadius: '10px'
         },
         cardClickable: {
             variant: 'variants.card',
             cursor: 'pointer',
+            transition: 'transform .2s, opacity .2s',
+            '&:active': {
+                transform: 'translateY(6px)'
+            },
+            'userSelect': 'none',
         },
         cardDisabled: {
             variant: 'variants.card',
@@ -195,17 +206,21 @@ const customTheme = {
             bottom: 0,
             left: 0,
             right: 0,
+            borderRadius: '30px 30px 0 0',
+            overflow: 'hidden',
             height: appBarHeight(),
-            bg: 'background',
-            boxShadow: '0px 10px 13px -7px #000000, 0px -3px 12px 3px rgba(0,0,0,0.2)'
+            bg: 'secondary',
+            boxShadow: '0px 10px 13px -7px #000000, 0px -8px 18px 3px rgba(0,0,0,0.2)'
         },
         headerFrame: {
             position: 'fixed',
+            bg: 'secondary',
             top: 0,
             left: 0,
             right: 0,
             height: headerHeight(),
             zIndex: 1000,
+            boxShadow: 'rgb(0, 0, 0, .4) 0px 10px 13px -7px, 5px 5px 15px 5px rgba(0,0,0,0)'
         },
         modalBackground: {
             bg: 'rgba(0, 0, 0, 0.6)',
@@ -222,6 +237,20 @@ const customTheme = {
             margin: 'auto',
             maxWidth: '1000px',
             borderRadius: '3px',
+        },
+        scrollList: {
+            maxHeight: 'calc(100% - 146px)',
+            mt: '66px',
+            mb: '80px',
+        },
+        action: {
+            position: 'fixed',
+            width: '60px',
+            height: '60px',
+            bottom: 0,
+            right: 0,
+            marginRight: 3,
+            marginBottom: appBarHeight(16)
         }
     }
 }

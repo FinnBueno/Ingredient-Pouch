@@ -1,0 +1,18 @@
+.navbar-enter {
+    opacity: 0;
+}
+.navbar-enter-active {
+    opacity: 1;
+    -o-transition: opacity 1000ms;
+    transition: opacity 1000ms;
+    -webkit-transition: opacity 1000ms;
+}
+.navbar-exit {
+    opacity: 1;
+}
+.navbar-exit-active {
+    opacity: 0;
+    -o-transition: opacity 1000ms;
+    transition: opacity 1000ms;
+    -webkit-transition: opacity 1000ms;
+}

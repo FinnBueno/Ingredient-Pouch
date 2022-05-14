@@ -3,7 +3,7 @@ import { Input as RebassInput, InputProps } from '@rebass/forms';
 import { Flex, Text } from 'rebass';
 import { useController, UseControllerProps } from 'react-hook-form';
 
-export const Input: React.FC<InputProps & { label?: string, textAlign: string } & UseControllerProps<any>> = ({ children, label, ...rest }) => {
+export const Input: React.FC<InputProps & { label?: string, textAlign?: string } & UseControllerProps<any>> = ({ children, label, ...rest }) => {
     const { field, fieldState } = useController(rest);
     return (
         <Flex flexDirection='column'>
