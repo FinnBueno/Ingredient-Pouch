@@ -155,6 +155,7 @@
     "dotenv": "^8.2.0",
     "emotion-theming": "^10.0.27",
     "firebase": "^8.3.3",
+    "google-search-results-nodejs": "^2.1.0",
     "lodash": "^4.17.15",
     "react": "^17.0.2",
     "react-circular-progressbar": "^2.0.4",

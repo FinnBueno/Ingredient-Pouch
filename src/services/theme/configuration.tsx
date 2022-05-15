@@ -88,10 +88,11 @@ const customTheme = {
             outline: 'none',
             '& > div': {
                 color: darkTheme.backgroundLight,
-            }
+            },
             // TODO: Set loading indicator colour
         },
         primaryLarge: {
+            variant: 'buttons.primary',
             bg: 'primary',
             fontWeight: 600,
             outline: 'none',
@@ -137,6 +138,20 @@ const customTheme = {
             p: 2
         },
         action: {
+            variant: 'primary',
+            width: '60px',
+            height: '60px',
+            p: 2,
+            pb: '6px',
+            borderRadius: '100%',
+        },
+        actionHollow: {
+            bg: 'transparent',
+            color: 'primary',
+            borderColor: 'primary',
+            borderWidth: '4px',
+            borderStyle: 'solid',
+            variant: 'primary',
             width: '60px',
             height: '60px',
             p: 2,
@@ -239,7 +254,11 @@ const customTheme = {
             borderRadius: '3px',
         },
         scrollList: {
-            maxHeight: 'calc(100% - 146px)',
+            borderRadius: '12px',
+            overflow: 'scroll'
+        },
+        pageContent: {
+            maxHeight: 'calc(100vh - 146px)',
             mt: '66px',
             mb: '80px',
         },
