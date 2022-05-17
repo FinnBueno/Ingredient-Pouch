@@ -5,12 +5,13 @@ import { MButton } from 'src/atoms';
 import { Modal } from 'src/atoms/modal';
 import { useContentManager } from 'src/services/database/ingredients';
 import { AddIngredient } from './add';
+import { IngredientCard } from './item';
 
 export const IngredientsPage: React.FC<{}> = () => {
     const [modalOpen, setModalOpen] = useState(false);
-    const [tab, setTab] = useState<'food' | 'spices'>('food');
+    const [tab, setTab] = useState<'food' | 'spice'>('food');
     const { ingredients } = useContentManager();
-    console.log(ingredients);
+
     return (
         <Flex flexDirection='column' width='100%' variant='pageContent'>
             <Modal isOpen={modalOpen} onBgClick={() => setModalOpen(false)}>
@@ -20,33 +21,19 @@ export const IngredientsPage: React.FC<{}> = () => {
                 <MButton onClick={() => setTab('food')} variant={tab === 'food' ? 'action' : 'actionHollow'} mr={4}>
                     <FaCarrot size={30} />
                 </MButton>
-                <MButton onClick={() => setTab('spices')} variant={tab === 'spices' ? 'action' : 'actionHollow'} ml={4}>
+                <MButton onClick={() => setTab('spice')} variant={tab === 'spice' ? 'action' : 'actionHollow'} ml={4}>
                     <FaMortarPestle size={30} />
                 </MButton>
             </Flex>
-            <Flex mx={2} py={0} flexDirection='row' flexWrap='wrap' variant='scrollList' maxHeight='calc(100% - 120px)'>
-                {ingredients.list.map((ingredient, index) => (
+            <Flex mx={2} py={0} flexDirection='row' flexWrap='wrap' variant='scrollList' maxHeight='calc(100% - 120px)' justifyContent='space-around'>
+                {ingredients.list.filter(ingredient => ingredient.type === tab).map(ingredient => (
                     <Flex width='100%' key={ingredient.id} my={2}>
-                        <Flex variant='card' width='100%'>
-                            <Flex flexDirection='column'>
-                                <Heading variant='heading4'>{ingredient.name}</Heading>
-                                {ingredient.notes ? <Text variant='body' mt={2}>{ingredient.notes}</Text> : <></>}
-                            </Flex>
-                            <Flex alignItems='center'>
-                                <MButton variant='icon'>
-                                    <FaMinus size={24} />
-                                </MButton>
-                                <Text variant='body' fontSize='34px' mx={2}>{ingredient.amount}</Text>
-                                <MButton variant='icon'>
-                                    <FaPlus size={24} />
-                                </MButton>
-                            </Flex>
-                        </Flex>
+                        <IngredientCard ingredient={ingredient} />
                     </Flex>
                 ))}
             </Flex>
             <Flex width='100%' my={2}>
-                <MButton variant='primaryLarge' width='100%'>
+                <MButton variant='primaryLarge' width='100%' onClick={() => setModalOpen(true)}>
                     <Text variant='body'>
                         Add ingredient
                     </Text>

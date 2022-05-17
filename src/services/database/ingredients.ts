@@ -12,7 +12,7 @@ interface UserContent {
     }
 }
 
-interface Ingredient {
+export interface Ingredient {
     id: string;
     name: string;
     url?: string;
@@ -21,7 +21,7 @@ interface Ingredient {
     notes?: string;
 }
 
-interface Recipe {
+export interface Recipe {
     id: string;
     name: string;
     url?: string;
