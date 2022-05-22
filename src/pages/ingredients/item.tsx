@@ -15,7 +15,7 @@ export const IngredientCard: React.FC<{ ingredient: Ingredient }> = ({ ingredien
                 <MButton variant='icon'>
                     <FaMinus size={24} />
                 </MButton>
-                <Text variant='body' fontSize='34px' mx={2}>{ingredient.amount}</Text>
+                <Text variant='body' fontSize='34px' mx={2}>1</Text>
                 <MButton variant='icon'>
                     <FaPlus size={24} />
                 </MButton>

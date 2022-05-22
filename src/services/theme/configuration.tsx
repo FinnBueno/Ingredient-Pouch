@@ -192,6 +192,12 @@ const customTheme = {
         }
     },
     variants: {
+        thumbnail: {
+            maxHeight: '65px',
+            maxWidth: '65px',
+            borderRadius: '5px',
+            p: 1
+        },
         card: {
             bg: 'secondary',
             boxShadow: 'rgb(0, 0, 0, .4) 0px 10px 13px -7px, 5px 5px 15px 5px rgba(0,0,0,0)',
@@ -250,7 +256,7 @@ const customTheme = {
             bg: 'background',
             position: 'relative',
             margin: 'auto',
-            maxWidth: '1000px',
+            maxWidth: 'min(1000px, calc(100% - 48px))',
             borderRadius: '3px',
         },
         scrollList: {

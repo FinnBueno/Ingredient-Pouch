@@ -16,9 +16,16 @@ export interface Ingredient {
     id: string;
     name: string;
     url?: string;
-    amount: number;
-    type: 'food' | 'spice';
+    image?: any; // raw image data
+    type: 'base' | 'tastemaker';
+    infinite: boolean;
     notes?: string;
+}
+
+export interface PouchItem {
+    amount: number;
+    ingredient: number;
+    receivedOn: number;
 }
 
 export interface Recipe {
@@ -55,7 +62,7 @@ export const useContentManager = (): UserContent => {
     const changeIngredientAmount = (ingredient: Ingredient, amount: number) => {
         return ingredientsRef
             .child(`${ingredient.id}/amount`)
-            .set(ingredient.amount + amount);
+            .set(0 + amount);
     }
 
     useEffect(() => {

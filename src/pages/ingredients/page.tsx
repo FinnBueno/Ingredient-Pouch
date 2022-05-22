@@ -9,7 +9,7 @@ import { IngredientCard } from './item';
 
 export const IngredientsPage: React.FC<{}> = () => {
     const [modalOpen, setModalOpen] = useState(false);
-    const [tab, setTab] = useState<'food' | 'spice'>('food');
+    const [tab, setTab] = useState<'base' | 'tastemaker'>('base');
     const { ingredients } = useContentManager();
 
     return (
@@ -18,10 +18,10 @@ export const IngredientsPage: React.FC<{}> = () => {
                 <AddIngredient close={() => setModalOpen(false)} />
             </Modal>
             <Flex justifyContent='center' my={3}>
-                <MButton onClick={() => setTab('food')} variant={tab === 'food' ? 'action' : 'actionHollow'} mr={4}>
+                <MButton onClick={() => setTab('base')} variant={tab === 'base' ? 'action' : 'actionHollow'} mr={4}>
                     <FaCarrot size={30} />
                 </MButton>
-                <MButton onClick={() => setTab('spice')} variant={tab === 'spice' ? 'action' : 'actionHollow'} ml={4}>
+                <MButton onClick={() => setTab('base')} variant={tab === 'tastemaker' ? 'action' : 'actionHollow'} ml={4}>
                     <FaMortarPestle size={30} />
                 </MButton>
             </Flex>
