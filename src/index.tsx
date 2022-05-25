@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Helmet } from 'react-helmet';
 import dotenv from 'dotenv';
 import firebase from 'firebase/app';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
@@ -26,14 +25,6 @@ firebase.initializeApp({
 
 ReactDOM.render(
     <React.StrictMode>
-        <Helmet>
-            <meta charSet="utf-8" />
-            <title>Ingredient Pouch</title>
-            <link rel="preconnect" href="https://fonts.gstatic.com" />
-            <link rel="preconnect" href="https://fonts.googleapis.com" />
-            <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin='' />
-            <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet" />
-        </Helmet>
         <App />
     </React.StrictMode>,
     document.getElementById('root')

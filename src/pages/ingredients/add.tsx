@@ -1,27 +1,32 @@
+import _ from 'lodash';
 import React, { useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
+import { trackPromise } from 'react-promise-tracker';
 
 import { Flex, Heading, Image, Text } from 'rebass';
 import { MButton, ProgressButton } from 'src/atoms';
 import { Divider } from 'src/atoms/divider';
-import { Ingredient, useContentManager } from 'src/services/database/ingredients';
+import { useIngredients } from 'src/services/database/ingredients';
+import { usePouch } from 'src/services/database/pouch';
+import { Ingredient } from 'src/services/database/types';
 import { NewIngredientForm } from './new-ingredient';
 
 export const AddIngredient: React.FC<{ close: () => void }> = ({ close }) => {
-    const { ingredients } = useContentManager();
+    const ingredientManager = useIngredients();
     const [formSelection, setFormSelection] = useState('new');
-    const [newIngredients, setNewIngredients] = useState<Ingredient[]>([]);
+    const [ingredientsToAdd, setNewIngredients] = useState<Ingredient[]>([]);
+    const pouchManager = usePouch();
 
     return (
-        <Flex flexDirection='column' height='100%' width='100%' p={3} maxHeight='540px' overflowY='scroll' overflowX='hidden'>
+        <Flex flexDirection='column' height='100%' width='100%' p={3} maxHeight='calc(100vh - 180px)' overflowY='scroll' overflowX='hidden'>
             <Heading variant='heading2' mb={2}>Add ingredients</Heading>
             <Flex bg='secondary' variant='scrollList' minHeight='100px' maxHeight='300px' flexDirection='column' pt={1}>
-                {newIngredients.length === 0 ? (
+                {ingredientsToAdd.length === 0 ? (
                     <Flex height='100px' width='100%' justifyContent='center' alignItems='center'>
                         <Text variant='body'>Add some stuff!</Text>
                     </Flex>
                 ) : (
-                    newIngredients.map(i => (
+                    ingredientsToAdd.map(i => (
                         <Flex width='100%' key={i.id} mb={1} justifyContent='space-between' alignItems='center'>
                             <Flex alignItems='center'>
                                 {i.image ? (
@@ -44,7 +49,7 @@ export const AddIngredient: React.FC<{ close: () => void }> = ({ close }) => {
                                     {
                                         i.name
                                     } - {
-                                        i.type
+                                        i.type === 'base' ? 'Base' : 'Spice/Herb'
                                     }{
                                         i.type === 'tastemaker' ?
                                             ` - ${i.infinite ? 'Generic' : 'Special'}` :
@@ -53,7 +58,7 @@ export const AddIngredient: React.FC<{ close: () => void }> = ({ close }) => {
                                 </Text>
                             </Flex>
                             <MButton variant='icon' onClick={
-                                () => setNewIngredients(newIngredients.filter(ni => ni.id !== i.id))
+                                () => setNewIngredients(ingredientsToAdd.filter(ni => ni.id !== i.id))
                             }>
                                 <FaTrash />
                             </MButton>
@@ -76,10 +81,11 @@ export const AddIngredient: React.FC<{ close: () => void }> = ({ close }) => {
                             (i) => {
                                 setNewIngredients(
                                     [
-                                        ...newIngredients,
+                                        ...ingredientsToAdd,
                                         {
                                             ...i,
-                                            id: String(newIngredients.length + 1)
+                                            lasts: +(i.lasts || '1'),
+                                            id: String(ingredientsToAdd.length + 1)
                                         }
                                     ]
                                 );
@@ -92,8 +98,11 @@ export const AddIngredient: React.FC<{ close: () => void }> = ({ close }) => {
             )}
             <Divider />
             <ProgressButton scope='save-ingredient' minHeight='35px' onClick={() => {
-                console.log(newIngredients);
-                close();
+                const [newIngredients, existingIngredients] = _.partition(ingredientsToAdd, i => !Number.isNaN(Number(i.id)));
+                trackPromise(pouchManager.addIngredientToPouch(...existingIngredients), 'save-ingredient');
+                trackPromise(ingredientManager.createNewIngredients(newIngredients), 'save-ingredient').then(savedIngredients => {
+                    trackPromise(pouchManager.addIngredientToPouch(...savedIngredients), 'save-ingredient').then(close);
+                });
             }} type='submit' width='100%'>
                 Save
             </ProgressButton>

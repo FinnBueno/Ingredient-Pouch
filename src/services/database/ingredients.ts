@@ -1,90 +1,59 @@
 import { useEffect, useState } from "react";
-import firebase from "firebase";
+import firebase from "firebase/app";
+import "firebase/database";
+import "firebase/storage";
+import _ from "lodash";
 import { useAuth } from "../auth";
+import { Ingredient } from "./types";
 
-interface UserContent {
-    ingredients: {
-        list: Ingredient[];
-        create: (_ingredient: Ingredient) => Promise<firebase.database.Reference>;
-        remove: (_id: string) => Promise<Error | null>;
-        increase: (_ingredient: Ingredient, _amount: number) => Promise<Error | null>;
-        decrease: (_ingredient: Ingredient, _amount: number) => Promise<Error | null>;
-    }
+interface IngredientsManager {
+    items: Ingredient[];
+    createNewIngredients: (_: Ingredient[]) => Promise<Ingredient[]>; // Returns the updated ingredients
 }
 
-export interface Ingredient {
-    id: string;
-    name: string;
-    url?: string;
-    image?: any; // raw image data
-    type: 'base' | 'tastemaker';
-    infinite: boolean;
-    notes?: string;
-}
-
-export interface PouchItem {
-    amount: number;
-    ingredient: number;
-    receivedOn: number;
-}
-
-export interface Recipe {
-    id: string;
-    name: string;
-    url?: string;
-    triesTillMastered: number;
-    timesSucceeded: number;
-    timesFailed: number;
-    dc: number;
-    notes?: string;
-}
-
-export const useContentManager = (): UserContent => {
+export const useIngredients = (): IngredientsManager => {
     const [ingredients, setIngredients] = useState<Ingredient[]>([]);
-    const [recipes, setRecipes] = useState<Recipe[]>([]);
     const auth = useAuth();
     const userId = auth!.user!.uid;
     
     const ingredientsRef = firebase.database().ref(`users/${userId}/ingredients/`);
-
-    const createIngredient = (ingredient: Ingredient) => {
-        return ingredientsRef
-            .push(ingredient)
-            .then(({ key }) => ingredientsRef.child(`${key}/id`).set(key));
-    }
-
-    const removeIngredient = (id: string) => {
-        return ingredientsRef
-            .child(id)
-            .remove();
-    }
-
-    const changeIngredientAmount = (ingredient: Ingredient, amount: number) => {
-        return ingredientsRef
-            .child(`${ingredient.id}/amount`)
-            .set(0 + amount);
-    }
+    const ingredientsImageRef = firebase.storage().ref(`${userId}/ingredientIcons/`);
 
     useEffect(() => {
-        const handle = (snapshot: firebase.database.DataSnapshot) => {
-            if (!snapshot.exists()) return;
-            console.log(Object.values(snapshot.val().ingredients));
-            setIngredients(Object.values(snapshot.val().ingredients || {}));
-            setRecipes(Object.values(snapshot.val().recipes || {}));
-            // setSettings(snapshot.val().settings || []);
-        };
-        const ref = firebase.database().ref(`users/${userId}`);
-        ref.on('value', handle);
-        return () => ref.off('value', handle);
-    }, []);
+        const listener = ingredientsRef.on('value', value => {
+            setIngredients(Object.values(value.val() || {}));
+        });
+        return () => ingredientsRef.off('value', listener);
+    })
+
+    const createNewIngredients = (ingredients: Ingredient[]): Promise<Ingredient[]> => {
+        return new Promise(async (resolve, reject) => {
+            // save all ingredients to db to generate IDs
+            try {
+                for (let i = 0; i < ingredients.length; i++) {
+                    const ingredient = ingredients[i];
+                    const pushedRow = await ingredientsRef.push(_.omit(ingredient, 'image'));
+                    await ingredientsRef.child(`${pushedRow.key}/id`).set(pushedRow.key);
+                    ingredients[i].id = pushedRow.key!;
+                    // upload images
+                    if (ingredient.image) {
+                        const ref = ingredientsImageRef.child(pushedRow.key || '');
+                        await ref.put(ingredient.image);
+                        const downloadUrl = await ref.getDownloadURL();
+                        await ingredientsRef.child(`${pushedRow.key}/url`).set(downloadUrl);
+                        ingredients[i].url = downloadUrl;
+                        ingredients[i].image = null;
+                    }
+                }
+                resolve(ingredients);
+            } catch (e) {
+                reject(e);
+            }
+        });
+    }
 
     return {
-        ingredients: {
-            list: ingredients,
-            create: createIngredient,
-            remove: removeIngredient,
-            increase: (ingredient: Ingredient, amount: number) => changeIngredientAmount(ingredient, amount),
-            decrease: (ingredient: Ingredient, amount: number) => changeIngredientAmount(ingredient, -amount),
-        }
+        createNewIngredients,
+        items: ingredients,
     };
 }

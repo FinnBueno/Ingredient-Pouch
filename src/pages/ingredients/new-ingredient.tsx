@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Flex, Image } from 'rebass';
-import { Input, MButton, Select } from 'src/atoms';
-import { Ingredient } from 'src/services/database/ingredients';
 import _ from 'lodash';
+import { Input, MButton, Select } from 'src/atoms';
+import { Ingredient } from 'src/services/database/types';
 
 
-export const NewIngredientForm: React.FC<{ onSubmit: (ingredient: Ingredient) => void }> = ({ onSubmit }) => {
+export const NewIngredientForm: React.FC<{ onSubmit: (_ingredient: Ingredient) => void }> = ({ onSubmit }) => {
     const methods = useForm<Ingredient>();
-    const { handleSubmit, reset, setValue, watch } = methods;
+    const { handleSubmit, reset, setValue } = methods;
     const [image, setImage] = useState<File | undefined>();
     return (
         <FormProvider {...methods}>
@@ -17,7 +17,7 @@ export const NewIngredientForm: React.FC<{ onSubmit: (ingredient: Ingredient) =>
                 reset();
                 setImage(undefined);
             })}>
-                <Input label='Name' name='name' required minLength={1} onChange={(e) => {
+                <Input label='Name' name='name' required minLength={1} onChange={(_e) => {
                     _.debounce(async () => {
                     }, 1000);
                 }} />
@@ -50,6 +50,7 @@ export const NewIngredientForm: React.FC<{ onSubmit: (ingredient: Ingredient) =>
                         setValue('image', file);
                     }} />
                 </Flex>
+                <Input label='Lasts for' name='lasts' min={1} defaultValue={5} type='number' />
                 <MButton mt={2} width='100%' variant='primary' type='submit'>
                     Add to list
                 </MButton>

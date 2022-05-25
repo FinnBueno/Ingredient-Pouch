@@ -2,7 +2,6 @@ import React from 'react';
 import { trackPromise } from 'react-promise-tracker';
 import { Flex, Heading, Text } from 'rebass';
 import 'firebase/auth';
-import _ from 'lodash';
 import { FaGoogle } from 'react-icons/fa';
 import { ProgressButton } from 'src/atoms';
 import { signInWithGoogle } from 'src/services/firebase';

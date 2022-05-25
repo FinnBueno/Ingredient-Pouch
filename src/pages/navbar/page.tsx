@@ -7,7 +7,7 @@ import { Flex, Heading, Text } from 'rebass';
 import { IngredientsPage } from '../ingredients';
 import { NavbarButton } from './button';
 
-export const NavigationBar: React.FC<{}> = ({ children }) => {
+export const NavigationBar: React.FC<{}> = () => {
     const history = useHistory();
     const { path, url } = useRouteMatch();
     const [tab, setCurrentTab] = useState('Ingredients');

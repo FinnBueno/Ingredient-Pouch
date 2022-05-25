@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import { FaCarrot, FaMinus, FaMortarPestle, FaPlus } from 'react-icons/fa';
-import { Flex, Heading, Text } from 'rebass';
+import { FaCarrot, FaMortarPestle } from 'react-icons/fa';
+import { Flex, Text } from 'rebass';
 import { MButton } from 'src/atoms';
 import { Modal } from 'src/atoms/modal';
-import { useContentManager } from 'src/services/database/ingredients';
+import { usePouch } from 'src/services/database/pouch';
 import { AddIngredient } from './add';
 import { IngredientCard } from './item';
 
 export const IngredientsPage: React.FC<{}> = () => {
     const [modalOpen, setModalOpen] = useState(false);
     const [tab, setTab] = useState<'base' | 'tastemaker'>('base');
-    const { ingredients } = useContentManager();
+    const pouch = usePouch();
 
     return (
         <Flex flexDirection='column' width='100%' variant='pageContent'>
@@ -21,19 +21,19 @@ export const IngredientsPage: React.FC<{}> = () => {
                 <MButton onClick={() => setTab('base')} variant={tab === 'base' ? 'action' : 'actionHollow'} mr={4}>
                     <FaCarrot size={30} />
                 </MButton>
-                <MButton onClick={() => setTab('base')} variant={tab === 'tastemaker' ? 'action' : 'actionHollow'} ml={4}>
+                <MButton onClick={() => setTab('tastemaker')} variant={tab === 'tastemaker' ? 'action' : 'actionHollow'} ml={4}>
                     <FaMortarPestle size={30} />
                 </MButton>
             </Flex>
-            <Flex mx={2} py={0} flexDirection='row' flexWrap='wrap' variant='scrollList' maxHeight='calc(100% - 120px)' justifyContent='space-around'>
-                {ingredients.list.filter(ingredient => ingredient.type === tab).map(ingredient => (
-                    <Flex width='100%' key={ingredient.id} my={2}>
-                        <IngredientCard ingredient={ingredient} />
+            <Flex mx={2} py={0} flexDirection='row' flexWrap='wrap' variant='scrollList' maxHeight='calc(100% - 120px)' flexGrow={1} justifyContent='space-around'>
+                {pouch.items.filter(item => item.ingredient.type === tab).map(item => (
+                    <Flex width='100%' key={item.id} my={2}>
+                        <IngredientCard item={item} onAmountChanged={amount => pouch.setAmount(item, amount)} />
                     </Flex>
                 ))}
             </Flex>
-            <Flex width='100%' my={2}>
-                <MButton variant='primaryLarge' width='100%' onClick={() => setModalOpen(true)}>
+            <Flex width='100%' alignSelf='flex-end' mt={2} mb={3}>
+                <MButton mx={3} variant='primaryLarge' width='100%' onClick={() => setModalOpen(true)}>
                     <Text variant='body'>
                         Add ingredient
                     </Text>
