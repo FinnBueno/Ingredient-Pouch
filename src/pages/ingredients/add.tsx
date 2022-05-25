@@ -9,7 +9,7 @@ import { Divider } from 'src/atoms/divider';
 import { useIngredients } from 'src/services/database/ingredients';
 import { usePouch } from 'src/services/database/pouch';
 import { Ingredient } from 'src/services/database/types';
-import { NewIngredientForm } from './new-ingredient';
+import { NewIngredientForm } from './forms/new-ingredient';
 
 export const AddIngredient: React.FC<{ close: () => void }> = ({ close }) => {
     const ingredientManager = useIngredients();

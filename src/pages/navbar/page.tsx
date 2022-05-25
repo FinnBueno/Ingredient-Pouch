@@ -5,6 +5,7 @@ import {
 import { useRouteMatch, Switch, Route, useHistory } from 'react-router';
 import { Flex, Heading, Text } from 'rebass';
 import { IngredientsPage } from '../ingredients';
+import { RulesPage } from '../rules/page';
 import { NavbarButton } from './button';
 
 export const NavigationBar: React.FC<{}> = () => {
@@ -20,10 +21,7 @@ export const NavigationBar: React.FC<{}> = () => {
             <Flex height='100%' width='100%'>
                 <Switch>
                     <Route path={`${path}/rules`}>
-                        {/* Rules explanation */}
-                        <Flex>
-                            <Text>Rules</Text>
-                        </Flex>
+                        <RulesPage />
                     </Route>
                     <Route path={`${path}/recipes`}>
                         {/* Recipe list */}
