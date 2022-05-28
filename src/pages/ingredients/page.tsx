@@ -25,7 +25,7 @@ export const IngredientsPage: React.FC<{}> = () => {
                     <FaMortarPestle size={30} />
                 </MButton>
             </Flex>
-            <Flex mx={2} py={0} flexDirection='row' flexWrap='wrap' variant='scrollList' maxHeight='calc(100% - 120px)' flexGrow={1} justifyContent='space-around'>
+            <Flex mx={2} py={0} flexDirection='column' variant='scrollList' maxHeight='calc(100% - 120px)' flexGrow={1} justifyContent='flex-start'>
                 {pouch.items.filter(item => item.ingredient.type === tab).map(item => (
                     <Flex width='100%' key={item.id} my={2}>
                         <IngredientCard item={item} onAmountChanged={amount => pouch.setAmount(item, amount)} />
