@@ -23,6 +23,7 @@ export const NewIngredientForm: React.FC<{ onSubmit: (_ingredient: Ingredient) =
                 }} />
                 <Flex mt={1} />
                 <Select
+                    mb={1}
                     label='Type'
                     name='type'
                     required
@@ -40,7 +41,7 @@ export const NewIngredientForm: React.FC<{ onSubmit: (_ingredient: Ingredient) =
                             <Image variant='thumbnail' src={URL.createObjectURL(image)} />
                         </Flex>
                     ) : (<></>)}
-                    <Input type='file' name='image' label='Image' onChange={(e) => {
+                    <Input mb={1} type='file' name='image' label='Image' accept='image/png, image/gif, image/jpeg' onChange={(e) => {
                         const file = e.target.files && e.target.files[0];
                         if (file) {
                             setImage(file);

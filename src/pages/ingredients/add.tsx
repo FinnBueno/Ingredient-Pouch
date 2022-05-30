@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React, { useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
 import { trackPromise } from 'react-promise-tracker';
-
+import { toast } from 'react-toastify';
 import { Flex, Heading, Image, Text } from 'rebass';
 import { MButton, ProgressButton } from 'src/atoms';
 import { Divider } from 'src/atoms/divider';
@@ -20,7 +20,7 @@ export const AddIngredient: React.FC<{ close: () => void }> = ({ close }) => {
     return (
         <Flex flexDirection='column' height='100%' width='100%' p={3} maxHeight='calc(100vh - 180px)' overflowY='scroll' overflowX='hidden'>
             <Heading variant='heading2' mb={2}>Add ingredients</Heading>
-            <Flex bg='secondary' variant='scrollList' minHeight='100px' maxHeight='300px' flexDirection='column' pt={1}>
+            <Flex bg='secondary' variant='scrollList' minHeight='100px' maxHeight='300px' flexDirection='column' pt={1} mb={2}>
                 {ingredientsToAdd.length === 0 ? (
                     <Flex height='100px' width='100%' justifyContent='center' alignItems='center'>
                         <Text variant='body'>Add some stuff!</Text>
@@ -66,7 +66,8 @@ export const AddIngredient: React.FC<{ close: () => void }> = ({ close }) => {
                     ))
                 )}
             </Flex>
-            <Flex justifyContent='center' my={3}>
+            <Divider />
+            <Flex justifyContent='center' my={2}>
                 <MButton onClick={() => setFormSelection('new')} width='100%' mr={2} variant={formSelection === 'new' ? 'primary' : 'hollow'}>
                     New
                 </MButton>
@@ -75,7 +76,7 @@ export const AddIngredient: React.FC<{ close: () => void }> = ({ close }) => {
                 </MButton>
             </Flex>
             {formSelection === 'new' ? (
-                <Flex mx={2} flexDirection='column'>
+                <Flex mx={2} flexDirection='column' mb={2}>
                     <NewIngredientForm
                         onSubmit={
                             (i) => {
@@ -97,15 +98,23 @@ export const AddIngredient: React.FC<{ close: () => void }> = ({ close }) => {
                 <p>TODO: Make selection</p>
             )}
             <Divider />
-            <ProgressButton scope='save-ingredient' minHeight='35px' onClick={() => {
+            <ProgressButton scope='save-ingredient' minHeight='35px' mt={2} onClick={() => {
                 const [newIngredients, existingIngredients] = _.partition(ingredientsToAdd, i => !Number.isNaN(Number(i.id)));
-                trackPromise(pouchManager.addIngredientToPouch(...existingIngredients), 'save-ingredient');
+                trackPromise(pouchManager.addIngredientToPouch(...existingIngredients), 'save-ingredient').catch((e) => error(e));
                 trackPromise(ingredientManager.createNewIngredients(newIngredients), 'save-ingredient').then(savedIngredients => {
-                    trackPromise(pouchManager.addIngredientToPouch(...savedIngredients), 'save-ingredient').then(close);
-                });
+                    trackPromise(pouchManager.addIngredientToPouch(...savedIngredients), 'save-ingredient').then(() => {
+                        close();
+                        toast('Succesfully added all items!');
+                    }).catch((e) => error(e));
+                }).catch((e) => error(e));
             }} type='submit' width='100%'>
                 Save
             </ProgressButton>
         </Flex>
     );
+}
+
+function error(e: any) {
+    toast(JSON.stringify(e) || 'no error');
+    console.log(e);
 }

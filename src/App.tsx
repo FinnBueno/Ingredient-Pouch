@@ -3,6 +3,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { ThemeProvider } from 'emotion-theming';
 import { ToastContainer } from 'react-toastify';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
+import 'react-toastify/dist/ReactToastify.css';
 import { GlobalStyle, theme } from './services/theme/configuration';
 import { LoadingBar } from './molecules';
 import { PageManager } from 'src/pages/router';
@@ -29,6 +30,7 @@ const App: React.FC<{}> = () => (
                 />
                 <LoadingBar />
                 <AuthProvider>
+                    <ToastContainer />
                     {/* Providers go here */}
                     <PageManager />
                 </AuthProvider>
