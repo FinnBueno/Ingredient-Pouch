@@ -24,7 +24,7 @@ export const useIngredients = (): IngredientsManager => {
             setIngredients(Object.values(value.val() || {}));
         });
         return () => ingredientsRef.off('value', listener);
-    })
+    }, []);
 
     const createNewIngredients = (ingredients: Ingredient[]): Promise<Ingredient[]> => {
         return new Promise(async (resolve, reject) => {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FaCarrot, FaMortarPestle } from 'react-icons/fa';
-import { Flex, Text } from 'rebass';
+import { Flex, Heading, Text } from 'rebass';
 import { MButton } from 'src/atoms';
 import { Modal } from 'src/atoms/modal';
 import { usePouch } from 'src/services/database/pouch';
@@ -31,6 +31,13 @@ export const IngredientsPage: React.FC<{}> = () => {
                         <IngredientCard item={item} onAmountChanged={amount => pouch.setAmount(item, amount)} />
                     </Flex>
                 ))}
+                {pouch.items.filter(item => item.ingredient.type === tab).length === 0 ? (
+                    <Flex justifyContent='center' alignItems='center' height='100%'>
+                        <Heading variant='heading3'>
+                            Your pouch is empty
+                        </Heading>
+                    </Flex>
+                ) : (<></>)}
             </Flex>
             <Flex width='100%' alignSelf='flex-end' mt={2} mb={3}>
                 <MButton mx={3} variant='primaryLarge' width='100%' onClick={() => setModalOpen(true)}>

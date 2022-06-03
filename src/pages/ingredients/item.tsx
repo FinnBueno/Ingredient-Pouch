@@ -44,7 +44,9 @@ export const IngredientCard: React.FC<IngredientCardProps> = ({ item, onAmountCh
             <Flex flexDirection='column' flex={1} justifyContent='center'>
                 <Heading variant='heading4'>{ingredient.name}</Heading>
                 {ingredient.notes ? <Text variant='body' mt={2}>{ingredient.notes}</Text> : <></>}
-                <Text variant='body' mt={2}>{currentDay === receivedOn ? 'Bought this today' : `${currentDay - receivedOn} days old`}</Text>
+                <Text variant='body' mt={2}>
+                    {currentDay === receivedOn ? 'Bought this today' : `${currentDay - receivedOn} day${currentDay - receivedOn === 1 ? '' : 's'} old`}
+                </Text>
             </Flex>
             <Flex alignItems='center'>
                 <MButton variant='icon' onClick={() => setAmountDebounceCounter(amountDebounceCounter - 1)}>

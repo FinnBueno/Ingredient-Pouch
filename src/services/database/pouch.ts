@@ -9,9 +9,10 @@ interface PouchManager {
     items: PouchItem[];
     addIngredientToPouch: (..._ingredients: Ingredient[]) => Promise<void>;
     setAmount: (_item: PouchItem, _amount: number) => Promise<any>;
+    saveCurrentDay: (_day: number) => void;
 }
 
-export const usePouch = (): PouchManager => {
+export const usePouch = (onFinishLoadingCurrentDay?: (_i: number) => void): PouchManager => {
     const [pouchItems, setPouchItems] = useState<PouchItem[]>([]);
     const [currentDay, setCurrentDay] = useState<number>(0);
     const auth = useAuth();
@@ -23,6 +24,7 @@ export const usePouch = (): PouchManager => {
         const dayCounterRef = firebase.database().ref(`users/${userId}/pouch/currentDay`);
         const listener = dayCounterRef.on('value', value => {
             setCurrentDay(value.val() || 0);
+            onFinishLoadingCurrentDay && onFinishLoadingCurrentDay(value.val() || 0);
         });
         return () => dayCounterRef.off('value', listener);
     }, []);
@@ -55,12 +57,15 @@ export const usePouch = (): PouchManager => {
         return pouchRef.child(`${item.id}/amount`).set(amount);
     }
 
-
+    const saveCurrentDay = (day: number) => {
+        firebase.database().ref(`users/${userId}/pouch/currentDay`).set(day);
+    }
 
     return {
         addIngredientToPouch,
         setAmount,
         items: pouchItems,
         currentDay,
+        saveCurrentDay
     };
 }

@@ -1,5 +1,5 @@
-import _ from 'lodash';
 import React, { useState } from 'react';
+import _ from 'lodash';
 import { FaTrash } from 'react-icons/fa';
 import { trackPromise } from 'react-promise-tracker';
 import { toast } from 'react-toastify';
@@ -9,6 +9,7 @@ import { Divider } from 'src/atoms/divider';
 import { useIngredients } from 'src/services/database/ingredients';
 import { usePouch } from 'src/services/database/pouch';
 import { Ingredient } from 'src/services/database/types';
+import { ExistingIngredientForm } from './forms/existing-ingredient';
 import { NewIngredientForm } from './forms/new-ingredient';
 
 export const AddIngredient: React.FC<{ close: () => void }> = ({ close }) => {
@@ -29,13 +30,13 @@ export const AddIngredient: React.FC<{ close: () => void }> = ({ close }) => {
                     ingredientsToAdd.map(i => (
                         <Flex width='100%' key={i.id} mb={1} justifyContent='space-between' alignItems='center'>
                             <Flex alignItems='center'>
-                                {i.image ? (
+                                {i.image || i.url ? (
                                     <Image
                                         ml={2}
                                         maxWidth='30px'
                                         maxHeight='30px'
                                         variant='thumbnail'
-                                        src={URL.createObjectURL(i.image)}
+                                        src={i.url ? i.url : URL.createObjectURL(i.image)}
                                     />
                                 ) : (
                                     <></>
@@ -75,8 +76,8 @@ export const AddIngredient: React.FC<{ close: () => void }> = ({ close }) => {
                     Existing
                 </MButton>
             </Flex>
-            {formSelection === 'new' ? (
-                <Flex mx={2} flexDirection='column' mb={2}>
+            <Flex flexDirection='column' mb={2}>
+                {formSelection === 'new' ? (
                     <NewIngredientForm
                         onSubmit={
                             (i) => {
@@ -93,10 +94,22 @@ export const AddIngredient: React.FC<{ close: () => void }> = ({ close }) => {
                             }
                         }
                     />
-                </Flex>
-            ) : (
-                <p>TODO: Make selection</p>
-            )}
+                ) : (
+                    <ExistingIngredientForm
+                        onSubmit={i => {
+                            setNewIngredients(
+                                [
+                                    ...ingredientsToAdd,
+                                    {
+                                        ...i,
+                                        lasts: +(i.lasts || '1')
+                                    }
+                                ]
+                            )
+                        }}
+                    />
+                )}
+            </Flex>
             <Divider />
             <ProgressButton scope='save-ingredient' minHeight='35px' mt={2} onClick={() => {
                 const [newIngredients, existingIngredients] = _.partition(ingredientsToAdd, i => !Number.isNaN(Number(i.id)));
@@ -104,7 +117,6 @@ export const AddIngredient: React.FC<{ close: () => void }> = ({ close }) => {
                 trackPromise(ingredientManager.createNewIngredients(newIngredients), 'save-ingredient').then(savedIngredients => {
                     trackPromise(pouchManager.addIngredientToPouch(...savedIngredients), 'save-ingredient').then(() => {
                         close();
-                        toast('Succesfully added all items!');
                     }).catch((e) => error(e));
                 }).catch((e) => error(e));
             }} type='submit' width='100%'>

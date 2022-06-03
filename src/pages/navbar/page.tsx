@@ -6,6 +6,7 @@ import { useRouteMatch, Switch, Route, useHistory } from 'react-router';
 import { Flex, Heading, Text } from 'rebass';
 import { IngredientsPage } from '../ingredients';
 import { RulesPage } from '../rules/page';
+import { SettingsPage } from '../settings';
 import { NavbarButton } from './button';
 
 export const NavigationBar: React.FC<{}> = () => {
@@ -31,9 +32,7 @@ export const NavigationBar: React.FC<{}> = () => {
                     </Route>
                     <Route path={`${path}/settings`}>
                         {/* Settings */}
-                        <Flex>
-                            <Text>Settings</Text>
-                        </Flex>
+                        <SettingsPage />
                     </Route>
                     <Route path={path}>
                         <IngredientsPage />
