@@ -138,10 +138,13 @@
     ]
   },
   "dependencies": {
+    "@emotion/react": "^11.9.0",
+    "@emotion/styled": "^11.8.1",
     "@fortawesome/fontawesome-svg-core": "^1.2.27",
     "@fortawesome/free-brands-svg-icons": "^5.15.3",
     "@fortawesome/free-solid-svg-icons": "^5.12.1",
     "@fortawesome/react-fontawesome": "^0.1.8",
+    "@mui/material": "^5.8.3",
     "@rebass/forms": "^4.0.6",
     "@rebass/layout": "^4.0.6",
     "@rebass/preset": "^4.0.5",

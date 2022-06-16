@@ -3,13 +3,14 @@ import { Input as RebassInput, InputProps } from '@rebass/forms';
 import { Flex, Text } from 'rebass';
 import { UseControllerProps, useFormContext } from 'react-hook-form';
 
-export const Input: React.FC<InputProps & { label?: string, textAlign?: string } & UseControllerProps<any>> =
+export const Input: React.FC<InputProps & { label?: string, textAlign?: string, icon?: React.ReactNode } & UseControllerProps<any>> =
     ({
         children,
         label,
         name,
         required,
         rules,
+        icon,
         ...rest
     }) => {
         const { formState: { errors }, register } = useFormContext();
@@ -19,9 +20,12 @@ export const Input: React.FC<InputProps & { label?: string, textAlign?: string }
                 <Text variant='label' ml={1} mb={1}>
                     {label || ''}
                 </Text>
-                <RebassInput {...(rest.type === 'file' ? {} : register(name, { required }))} autoComplete='off' variant='input' {...rest}>
-                    {children}
-                </RebassInput>
+                <Flex width='100%'>
+                    {icon || <></>}
+                    <RebassInput {...(rest.type === 'file' ? {} : register(name, { required }))} autoComplete='off' variant='input' {...rest}>
+                        {children}
+                    </RebassInput>
+                </Flex>
                 {fieldErrors?.type === 'validate' ? <Text mt={1} variant='error'>{fieldErrors.message}</Text> : ''}
                 {fieldErrors?.type === 'required' ? <Text mt={1} variant='error'>{fieldErrors.message || 'This value is required'}</Text> : ''}
                 {fieldErrors?.type === 'min' ? <Text mt={1} variant='error'>{fieldErrors.message || `Number must be more than ${rules?.min}`}</Text> : ''}

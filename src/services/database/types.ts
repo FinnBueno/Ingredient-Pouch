@@ -16,13 +16,17 @@ export interface PouchItem {
     receivedOn: number;
 }
 
+type RollType = 'Strength' | 'Dexterity' | 'Constitution' | 'Intelligence' | 'Wisdom' | 'Charisma';
+
 export interface Recipe {
     id: string;
     name: string;
     url?: string;
+    image?: any; // not sure how I'm going to handle banners for recipes yet
     triesTillMastered: number;
     timesSucceeded: number;
-    timesFailed: number;
     dc: number;
+    rolls: RollType[];
     notes?: string;
+    // TODO: Add an ingredients[] field, should probably be references so that the app automatically subtracts required ingredients
 }

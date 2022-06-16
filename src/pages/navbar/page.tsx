@@ -1,10 +1,13 @@
+import _ from 'lodash';
 import React, { useState } from 'react';
 import {
     FaBacon, FaBookmark, FaBookOpen, FaBreadSlice, FaCarrot, FaCheese, FaCogs, FaCookie, FaEgg, FaFish, FaLemon, FaPepperHot, FaWineBottle 
 } from 'react-icons/fa';
 import { useRouteMatch, Switch, Route, useHistory } from 'react-router';
-import { Flex, Heading, Text } from 'rebass';
+import { useLocation } from 'react-router-dom';
+import { Flex, Heading } from 'rebass';
 import { IngredientsPage } from '../ingredients';
+import { RecipesPage } from '../recipes';
 import { RulesPage } from '../rules/page';
 import { SettingsPage } from '../settings';
 import { NavbarButton } from './button';
@@ -12,12 +15,14 @@ import { NavbarButton } from './button';
 export const NavigationBar: React.FC<{}> = () => {
     const history = useHistory();
     const { path, url } = useRouteMatch();
-    const [tab, setCurrentTab] = useState('Ingredients');
+    const { pathname } = useLocation();
+    console.log(pathname.replaceAll(`${path}/`, ''));
+    const [tab, setCurrentTab] = useState(pathname.replaceAll(`${path}/`, '') || 'ingredients');
 
     return (
         <Flex flexDirection='column' justifyContent='space-between' height='100%'>
             <Flex variant='headerFrame' justifyContent='center' pt={2} pb={3} style={{ borderRadius: '0 0 50% 50%' }}>
-                <Heading variant='heading2'>{tab}</Heading>
+                <Heading variant='heading2'>{_.capitalize(tab)}</Heading>
             </Flex>
             <Flex height='100%' width='100%'>
                 <Switch>
@@ -25,10 +30,7 @@ export const NavigationBar: React.FC<{}> = () => {
                         <RulesPage />
                     </Route>
                     <Route path={`${path}/recipes`}>
-                        {/* Recipe list */}
-                        <Flex>
-                            <Text>Recipes</Text>
-                        </Flex>
+                        <RecipesPage />
                     </Route>
                     <Route path={`${path}/settings`}>
                         {/* Settings */}
@@ -44,38 +46,38 @@ export const NavigationBar: React.FC<{}> = () => {
                     <NavbarButton
                         onClick={() => {
                             history.push(url);
-                            setCurrentTab('Ingredients');
+                            setCurrentTab('ingredients');
                         }}
                         title='Ingredients'
                         icon={findIngredientIcon()}
-                        active={tab === 'Ingredients'}
+                        active={tab === 'ingredients'}
                     />
                     <NavbarButton
                         onClick={() => {
                             history.push(`${url}/recipes`);
-                            setCurrentTab('Recipes');
+                            setCurrentTab('recipes');
                         }}
                         title='Recipes'
                         icon={FaBookOpen}
-                        active={tab === 'Recipes'}
+                        active={tab === 'recipes'}
                     />
                     <NavbarButton
                         onClick={() => {
                             history.push(`${url}/rules`);
-                            setCurrentTab('Rules');
+                            setCurrentTab('rules');
                         }}
                         title='Rules'
                         icon={FaBookmark}
-                        active={tab === 'Rules'}
+                        active={tab === 'rules'}
                     />
                     <NavbarButton
                         onClick={() => {
                             history.push(`${url}/settings`);
-                            setCurrentTab('Settings');
+                            setCurrentTab('settings');
                         }}
                         title='Settings'
                         icon={FaCogs}
-                        active={tab === 'Settings'}
+                        active={tab === 'settings'}
                     />
                 </Flex>
             </Flex>

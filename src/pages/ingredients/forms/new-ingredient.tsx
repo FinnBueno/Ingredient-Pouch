@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Flex, Image } from 'rebass';
-import _ from 'lodash';
 import { Input, MButton, Select } from 'src/atoms';
 import { Ingredient } from 'src/services/database/types';
 
@@ -17,10 +16,7 @@ export const NewIngredientForm: React.FC<{ onSubmit: (_ingredient: Ingredient) =
                 reset();
                 setImage(undefined);
             })}>
-                <Input label='Name' name='name' required minLength={1} onChange={(_e) => {
-                    _.debounce(async () => {
-                    }, 1000);
-                }} />
+                <Input label='Name' name='name' required minLength={1} />
                 <Flex mt={1} />
                 <Select
                     mb={1}

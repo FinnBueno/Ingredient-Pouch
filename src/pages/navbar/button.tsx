@@ -11,7 +11,7 @@ interface NavbarButtonProps {
 }
 
 export const NavbarButton: React.FC<NavbarButtonProps> = ({ onClick, icon: Icon, title, active }) => (
-    <Flex flex={1} justifyContent='center' style={{ background: active ? theme.colors.secondaryDarker : '' }}>
+    <Flex flex={1} justifyContent='center' style={{ cursor: 'pointer', background: active ? theme.colors.secondaryDarker : '' }}>
         <Flex alignItems='center' flexDirection='column' onClick={onClick}>
             <Icon size='100%' style={{ zIndex: 1, paddingTop: '20px' }} />
             <Text variant='caption' mt={1} mb={3}>
