@@ -1,34 +1,20 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import { FaSlidersH } from 'react-icons/fa';
-import { Flex } from 'rebass';
+import { Flex, Heading, Text } from 'rebass';
 import { Input, MButton } from 'src/atoms';
+import { Modal } from 'src/atoms/modal';
 import { useRecipeBook } from 'src/services/database/recipebook';
-import { Recipe } from 'src/services/database/types';
 import { useDebouncedState } from 'src/services/debounced-state';
 import { RecipeCard } from './card';
-
-const testRecipe: Recipe = {
-    id: '1',
-    name: 'Midnight Noodles',
-    url: '',
-    image: undefined,
-    triesTillMastered: 3,
-    timesSucceeded: 1,
-    dc: 16,
-    rolls: [
-        'Intelligence',
-        'Dexterity',
-    ],
-    notes: 'I created this recipe all by myself, inspired by the great time I had with Atara.'
-}
+import { CreateRecipeForm, RecipeForm } from './forms/create';
 
 export const RecipesPage: React.FC<{}> = () => {
-    const [searchHeight, setSearchHeight] = useState(0);
-    const searchRef = useRef<any>(null);
-    useEffect(() => {
-        setSearchHeight(searchRef?.current?.clientHeight || 0);
-    });
+    // const [searchHeight, setSearchHeight] = useState(0);
+    // const searchRef = useRef<any>(null);
+    // useEffect(() => {
+    //     setSearchHeight(searchRef?.current?.clientHeight || 0);
+    // });
+    const [modalOpen, setModalOpen] = useState(false);
     const methods = useForm<{ search: string }>({
         defaultValues: {
             search: ''
@@ -36,11 +22,19 @@ export const RecipesPage: React.FC<{}> = () => {
     });
     const recipeBook = useRecipeBook();
 
-    const [_searchTerm, setSearchTerm] = useDebouncedState(methods.getValues().search);
+    const [searchTerm, setSearchTerm] = useDebouncedState(methods.getValues().search, 200);
 
     return (
         <Flex flexDirection='column' width='100%' variant='pageContent'>
-            <Flex justifyContent='center' mx={2} my={3} ref={searchRef} flex={1} alignItems='center'>
+            <Modal isOpen={modalOpen} onBgClick={() => setModalOpen(false)}>
+                {/* TODO: Move this shit to Modal */}
+                <Flex flexDirection='column' height='100%' width='100%' p={3} maxHeight='calc(100vh - 180px)' overflowY='scroll' overflowX='hidden'>
+                    <Heading variant='heading2' mb={2}>Add recipe</Heading>
+                    <CreateRecipeForm onCreate={(_recipe: RecipeForm) => setModalOpen(false)} />
+                </Flex>
+            </Modal>
+            {/* ref={searchRef} */}
+            <Flex justifyContent='center' mx={2} my={3} flex={1} alignItems='center'>
                 <Flex flex={1} >
                     <FormProvider {...methods}>
                         <form style={{ width: '100%' }} onSubmit={() => { }}>
@@ -52,25 +46,31 @@ export const RecipesPage: React.FC<{}> = () => {
                         </form>
                     </FormProvider>
                 </Flex>
-                <Flex>
+                {/* <Flex>
                     <MButton variant='icon' ml={2}>
                         <FaSlidersH size={30} />
                     </MButton>
-                </Flex>
+                </Flex> */}
             </Flex>
             <Flex
                 mx={2}
                 py={0}
                 flexDirection='column'
                 variant='scrollList'
-                maxHeight={`calc(100% - ${searchHeight})px`}
                 height='100%'
                 flexGrow={1}
                 justifyContent='flex-start'
             >
-                {recipeBook.recipes.map(recipe => (
-                    <RecipeCard recipe={recipe} />
+                {recipeBook.recipes.filter(r => r.name.includes(searchTerm)).map(recipe => (
+                    <RecipeCard key={recipe.id} recipe={recipe} />
                 ))}
+            </Flex>
+            <Flex width='100%' alignSelf='flex-end' mt={2} mb={3}>
+                <MButton mx={3} variant='primaryLarge' width='100%' onClick={() => setModalOpen(true)}>
+                    <Text variant='body'>
+                        Add Recipe
+                    </Text>
+                </MButton>
             </Flex>
         </Flex>
     );

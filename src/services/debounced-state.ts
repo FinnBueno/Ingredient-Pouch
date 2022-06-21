@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-export const useDebouncedState: <T>(_initial: T) => [T, (_newState: T) => void] = <T>(initial: T) => {
+export const useDebouncedState: <T>(_initial: T, _debounceTime?: number) => [T, (_newState: T) => void] = <T>(initial: T, debounceTime = 1000) => {
     const [value, setValue] = useState<T>(initial);
     const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
@@ -8,7 +8,7 @@ export const useDebouncedState: <T>(_initial: T) => [T, (_newState: T) => void] 
         clearTimeout(timeoutRef.current);
         timeoutRef.current = setTimeout(() => {
             setValue(newValue);
-        }, 1000);
+        }, debounceTime);
     }
 
     useEffect(() => {

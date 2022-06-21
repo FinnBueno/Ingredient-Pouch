@@ -189,6 +189,16 @@ const customTheme = {
             '& + svg': {
                 fill: 'secondary'
             }
+        },
+        checkbox: {
+            m: 0,
+            outline: 'none',
+            '&:active': {
+                borderColor: 'primary',
+            },
+            '&:focus': {
+                outline: 'none'
+            }
         }
     },
     variants: {
@@ -256,6 +266,7 @@ const customTheme = {
             bg: 'background',
             position: 'relative',
             margin: 'auto',
+            width: '100%',
             maxWidth: 'min(1000px, calc(100% - 48px))',
             borderRadius: '3px',
         },

@@ -16,8 +16,7 @@ export const NavigationBar: React.FC<{}> = () => {
     const history = useHistory();
     const { path, url } = useRouteMatch();
     const { pathname } = useLocation();
-    console.log(pathname.replaceAll(`${path}/`, ''));
-    const [tab, setCurrentTab] = useState(pathname.replaceAll(`${path}/`, '') || 'ingredients');
+    const [tab, setCurrentTab] = useState(pathname.replace(path, '').replace('/', '') || 'ingredients');
 
     return (
         <Flex flexDirection='column' justifyContent='space-between' height='100%'>
