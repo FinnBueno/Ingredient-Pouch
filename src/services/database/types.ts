@@ -16,9 +16,7 @@ export interface PouchItem {
     receivedOn: number;
 }
 
-type RollType = 'Strength' | 'Dexterity' | 'Constitution' | 'Intelligence' | 'Wisdom' | 'Charisma';
-
-type IngredientRef = Pick<Ingredient, 'id' | 'name'>;
+export type RollType = 'strength' | 'dexterity' | 'constitution' | 'intelligence' | 'wisdom' | 'charisma';
 
 export interface Recipe {
     id: string;
@@ -28,8 +26,14 @@ export interface Recipe {
     triesTillMastered: number;
     timesSucceeded: number;
     dc: number;
-    rolls: RollType[];
-    ingredients: IngredientRef[];
+    check: {
+        strength: boolean;
+        dexterity: boolean;
+        constitution: boolean;
+        intelligence: boolean;
+        wisdom: boolean;
+        charisma: boolean;
+    };
+    ingredients: Ingredient[];
     notes?: string;
-    // TODO: Add an ingredients[] field, should probably be references so that the app automatically subtracts required ingredients
 }

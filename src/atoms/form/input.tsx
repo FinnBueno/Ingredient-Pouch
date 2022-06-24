@@ -16,7 +16,7 @@ export const Input: React.FC<InputProps & { label?: string, textAlign?: string, 
         const { formState: { errors }, register } = useFormContext();
         const fieldErrors = errors[name];
         return (
-            <Flex flexDirection='column'>
+            <Flex flexDirection='column' width='100%'>
                 <Text variant='label' ml={1} mb={1}>
                     {label || ''}
                 </Text>

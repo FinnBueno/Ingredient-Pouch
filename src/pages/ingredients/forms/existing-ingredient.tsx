@@ -4,7 +4,6 @@ import { MButton, Select } from 'src/atoms';
 import { Ingredient } from 'src/services/database/types';
 import { useIngredients } from 'src/services/database/ingredients';
 
-
 export const ExistingIngredientForm: React.FC<{ onSubmit: (_ingredient: Ingredient) => void }> = ({ onSubmit }) => {
     const methods = useForm<{ ingredients: string }>();
     const { items: allIngredients } = useIngredients();

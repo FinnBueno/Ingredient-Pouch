@@ -3,7 +3,7 @@ import { FaMinus, FaPlus } from 'react-icons/fa';
 import { Flex, Heading, Image, Text } from 'rebass';
 import { MButton } from 'src/atoms';
 import { usePouch } from 'src/services/database/pouch';
-import { PouchItem } from 'src/services/database/types';
+import { Ingredient, PouchItem } from 'src/services/database/types';
 
 type IngredientCardProps = {
     item: PouchItem;
@@ -44,9 +44,12 @@ export const IngredientCard: React.FC<IngredientCardProps> = ({ item, onAmountCh
             <Flex flexDirection='column' flex={1} justifyContent='center'>
                 <Heading variant='heading4'>{ingredient.name}</Heading>
                 {ingredient.notes ? <Text variant='body' mt={2}>{ingredient.notes}</Text> : <></>}
-                <Text variant='body' mt={2}>
-                    {currentDay === receivedOn ? 'Bought this today' : `${currentDay - receivedOn} day${currentDay - receivedOn === 1 ? '' : 's'} old`}
-                </Text>
+                {ingredient.type === 'base' ? (
+                    <Text variant='body' mt={2}>
+                        {getDurationText(ingredient, currentDay, receivedOn)}
+                    </Text>
+                ) : <></>
+                }
             </Flex>
             <Flex alignItems='center'>
                 <MButton variant='icon' onClick={() => setAmountDebounceCounter(amountDebounceCounter - 1)}>
@@ -59,4 +62,10 @@ export const IngredientCard: React.FC<IngredientCardProps> = ({ item, onAmountCh
             </Flex>
         </Flex>
     );
+}
+
+const getDurationText = (ingredient: Ingredient, currentDay: number, receivedOn: number): string => {
+    const age = currentDay - receivedOn;
+    const daysLeft = (ingredient.lasts || age) - age;
+    return currentDay === receivedOn ? 'Bought this today' : `${age} day${age === 1 ? '' : 's'} old - Goes bad in ${daysLeft} day${daysLeft === 1 ? '' : 's'}`;
 }

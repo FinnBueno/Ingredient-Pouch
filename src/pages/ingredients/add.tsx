@@ -19,7 +19,17 @@ export const AddIngredient: React.FC<{ close: () => void }> = ({ close }) => {
     const pouchManager = usePouch();
 
     return (
-        <Flex flexDirection='column' height='100%' width='100%' p={3} maxHeight='calc(100vh - 180px)' overflowY='scroll' overflowX='hidden'>
+        <Flex
+            flexDirection='column'
+            height='100%'
+            width='100%'
+            p={3}
+            maxHeight='calc(100vh - 180px)'
+            overflowY='scroll'
+            overflowX='hidden'
+            backgroundColor='background'
+            variant='scrollList'
+        >
             <Heading variant='heading2' mb={2}>Add ingredients</Heading>
             <Flex bg='secondary' variant='scrollList' minHeight='100px' maxHeight='300px' flexDirection='column' pt={1} mb={2}>
                 {ingredientsToAdd.length === 0 ? (

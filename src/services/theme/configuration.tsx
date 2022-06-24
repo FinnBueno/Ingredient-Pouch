@@ -202,6 +202,12 @@ const customTheme = {
         }
     },
     variants: {
+        tag: {
+            background: 'rgba(0, 0, 0, 0.25)',
+            borderRadius: '999px',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+        },
         thumbnail: {
             maxHeight: '65px',
             maxWidth: '65px',
@@ -260,19 +266,22 @@ const customTheme = {
             bottom: 0,
             left: 0,
             right: 0,
-            zIndex: 100,
+            zIndex: 1000,
         },
         modalContainer: {
-            bg: 'background',
             position: 'relative',
             margin: 'auto',
             width: '100%',
             maxWidth: 'min(1000px, calc(100% - 48px))',
             borderRadius: '3px',
+            maxHeight: 'calc(100% - 150px)'
         },
         scrollList: {
             borderRadius: '12px',
-            overflow: 'scroll'
+            overflow: 'scroll',
+            '&::-webkit-scrollbar': {
+                display: 'none'
+            }
         },
         pageContent: {
             maxHeight: 'calc(100vh - 146px)',

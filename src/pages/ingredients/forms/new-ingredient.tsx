@@ -5,17 +5,25 @@ import { Input, MButton, Select } from 'src/atoms';
 import { Ingredient } from 'src/services/database/types';
 
 
-export const NewIngredientForm: React.FC<{ onSubmit: (_ingredient: Ingredient) => void }> = ({ onSubmit }) => {
-    const methods = useForm<Ingredient>();
+export const NewIngredientForm: React.FC<{ onSubmit: (_ingredient: Ingredient) => void, name?: string }> = ({ onSubmit, name }) => {
+    const methods = useForm<Ingredient>({
+        defaultValues: {
+            name
+        }
+    });
     const { handleSubmit, reset, setValue } = methods;
     const [image, setImage] = useState<File | undefined>();
     return (
         <FormProvider {...methods}>
-            <form onSubmit={handleSubmit(v => {
-                onSubmit(v);
-                reset();
-                setImage(undefined);
-            })}>
+            <form onSubmit={e => {
+                console.log('Test');
+                e.preventDefault();
+                handleSubmit(v => {
+                    onSubmit(v);
+                    reset();
+                    setImage(undefined);
+                })();
+            }}>
                 <Input label='Name' name='name' required minLength={1} />
                 <Flex mt={1} />
                 <Select
@@ -31,7 +39,7 @@ export const NewIngredientForm: React.FC<{ onSubmit: (_ingredient: Ingredient) =
                     <option value='tastemaker'>Spice/Herb - Special</option>
                     <option value='tastemaker'>Spice/Herb - Generic</option>
                 </Select>
-                <Flex>
+                <Flex width='100%'>
                     {image ? (
                         <Flex>
                             <Image variant='thumbnail' src={URL.createObjectURL(image)} />
