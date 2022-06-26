@@ -49,7 +49,7 @@ export const NavigationBar: React.FC<{}> = () => {
                         icon={findIngredientIcon()}
                         active={tab === 'ingredients'}
                     />
-                    <NavbarButton
+                    {/* <NavbarButton
                         onClick={() => {
                             history.push(`${url}/recipes`);
                             setCurrentTab('recipes');
@@ -57,7 +57,7 @@ export const NavigationBar: React.FC<{}> = () => {
                         title='Recipes'
                         icon={FaBookOpen}
                         active={tab === 'recipes'}
-                    />
+                    /> */}
                     <NavbarButton
                         onClick={() => {
                             history.push(`${url}/rules`);
