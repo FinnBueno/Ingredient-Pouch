@@ -7,7 +7,6 @@ import { useRouteMatch, Switch, Route, useHistory } from 'react-router';
 import { useLocation } from 'react-router-dom';
 import { Flex, Heading } from 'rebass';
 import { IngredientsPage } from '../ingredients';
-import { RecipesPage } from '../recipes';
 import { RulesPage } from '../rules/page';
 import { SettingsPage } from '../settings';
 import { NavbarButton } from './button';
