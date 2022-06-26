@@ -20,7 +20,6 @@ export const RecipeOverview: React.FC<{ recipe: Recipe }> = ({ recipe }) => {
     const calculateMaxPortions = () => {
         const requiredIngredientsByID: { [key: string]: Ingredient } = {};
         recipe.ingredients.forEach(i => requiredIngredientsByID[i.id] = i);
-        console.log(requiredIngredientsByID);
         let maxPortionAmount = Number.MAX_SAFE_INTEGER;
         let amountRequiredIngredientsFoundInPouch = 0;
         pouch.items.forEach(item => {
@@ -29,13 +28,23 @@ export const RecipeOverview: React.FC<{ recipe: Recipe }> = ({ recipe }) => {
             if (!ingredientRequiredForRecipe) return;
             if (maxPortionAmount > item.amount) {
                 maxPortionAmount = item.amount;
-                amountRequiredIngredientsFoundInPouch++;
             }
+            amountRequiredIngredientsFoundInPouch++;
         });
         if (amountRequiredIngredientsFoundInPouch < recipe.ingredients.length) {
             maxPortionAmount = 0;
         }
         return maxPortionAmount;
+    }
+
+    const consumeIngredients = () => {
+        const requiredIngredientsByID: { [key: string]: Ingredient } = {};
+        recipe.ingredients.forEach(i => requiredIngredientsByID[i.id] = i);
+        pouch.items.forEach(item => {
+            const ingredientRequiredForRecipe = !!requiredIngredientsByID[item.ingredient.id];
+            if (!ingredientRequiredForRecipe) return;
+            pouch.setAmount(item, item.amount - prepareCount);
+        })
     }
 
     const maxPortions = calculateMaxPortions();
@@ -119,7 +128,7 @@ export const RecipeOverview: React.FC<{ recipe: Recipe }> = ({ recipe }) => {
                     <Tag key={i} content={_.capitalize(i)} />
                 ))}
                 <Text mt={3} mb={2} variant='body'>
-                    You can currently make <b>{maxPortions}</b> portions of this recipe. How many do you want to make?
+                    You can currently make <b>{maxPortions}</b> portions of this recipe.{prepareCount > 0 ? ' How many do you want to make?' : ''}
                 </Text>
                 <Flex justifyContent='center' alignItems='center'>
                     <MButton variant='icon' onClick={() => setPrepareCount(i => i <= 1 ? 1 : i - 1)}>
@@ -130,9 +139,11 @@ export const RecipeOverview: React.FC<{ recipe: Recipe }> = ({ recipe }) => {
                         <FaPlus size={25} />
                     </MButton>
                 </Flex>
-                <ProgressButton scope='prepare-recipe' onClick={() => { }}>
-                    Prepare {prepareCount} portion{prepareCount === 1 ? '' : 's'}
-                </ProgressButton>
+                {prepareCount > 0 ? (
+                    <ProgressButton scope='prepare-recipe' onClick={consumeIngredients}>
+                        Prepare {prepareCount} portion{prepareCount === 1 ? '' : 's'}
+                    </ProgressButton>
+                ) : <></>}
             </Flex>
         </Flex>
     )
