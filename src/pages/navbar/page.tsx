@@ -28,11 +28,10 @@ export const NavigationBar: React.FC<{}> = () => {
                     <Route path={`${path}/rules`}>
                         <RulesPage />
                     </Route>
-                    <Route path={`${path}/recipes`}>
+                    {/* <Route path={`${path}/recipes`}>
                         <RecipesPage />
-                    </Route>
+                    </Route> */}
                     <Route path={`${path}/settings`}>
-                        {/* Settings */}
                         <SettingsPage />
                     </Route>
                     <Route path={path}>
